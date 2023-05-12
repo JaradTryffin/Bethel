@@ -1,0 +1,51 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Department {
+  id         String   @id @unique @default(uuid())
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  member     Member[]
+}
+
+model Member {
+  id              String       @id @unique @default(uuid())
+  first_name      String
+  last_name       String
+  address         String
+  email_address   String?      @unique
+  contact_no      String
+  date_of_birth   DateTime?
+  material_status String?
+  department      Department?  @relation(fields: [departmentId], references: [id])
+  departmentId    String?
+  attendance      Attendance[]
+  zone            Zone         @relation(fields: [zoneId], references: [id])
+  zoneId          String
+  created_at      DateTime     @default(now())
+  updated_at      DateTime     @updatedAt
+}
+
+model Attendance {
+  id       String   @id @unique @default(uuid())
+  member   Member   @relation(fields: [memberId], references: [id])
+  memberId String
+  date     DateTime
+  status   Boolean
+}
+
+model Zone {
+  id         String   @id @unique @default(uuid())
+  name       String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  member     Member[]
+}

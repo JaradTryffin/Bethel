@@ -13,6 +13,7 @@ import { Department } from "@/types/member.type";
 import { SubmitHandler, useController, useForm } from "react-hook-form";
 import { Inputs } from "preact/compat";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export default function ModelForm({
   department,
@@ -26,6 +27,7 @@ export default function ModelForm({
   const [status, setStatus] = useState("single");
   const [departmentDropDown, setDepartmentDropDown] = useState("");
   const [zoneDropDown, setZoneDropDown] = useState("");
+  const router = useRouter();
 
   const {
     register,
@@ -49,7 +51,8 @@ export default function ModelForm({
     await axios.post("/api/members", formData, {}).then(function (response) {
       console.log(response);
     });
-    
+    setOpen(false);
+    router.push("/");
   };
 
   const handleModel = () => {

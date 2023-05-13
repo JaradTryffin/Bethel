@@ -18,6 +18,8 @@ export interface BasicSelectProps {
   onChange: (event: SelectChangeEvent) => void;
   width?: number;
   register?: any;
+  errors?: any;
+  name?: string;
 }
 
 export interface Department {
@@ -29,7 +31,7 @@ export interface AddMember {
   first_name: string;
   last_name: string;
   address: string;
-  email_address: string;
+  email_address?: string;
   contact_no: string;
   date_of_birth: string;
   material_status: string;

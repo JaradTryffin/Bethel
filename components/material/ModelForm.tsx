@@ -35,6 +35,7 @@ export default function ModelForm({
     watch,
     control,
     formState: { errors },
+    reset,
   } = useForm();
 
   const { field } = useController({
@@ -48,9 +49,7 @@ export default function ModelForm({
       ...data,
       date_of_birth: dayjs(data.date_of_birth),
     };
-    await axios.post("/api/members", formData, {}).then(function (response) {
-      console.log(response);
-    });
+    await axios.post("/api/members", formData, {}).then(function (response) {});
     setOpen(false);
     router.push("/");
   };
@@ -58,6 +57,20 @@ export default function ModelForm({
   const handleModel = () => {
     setOpen(!open);
   };
+
+  function isMorningOrAfternoon(time: Date): string {
+    const hours = time.getHours();
+    if (hours >= 5 && hours <= 12) {
+      return "morning";
+    } else if (hours >= 13 && hours <= 18) {
+      return "afternoon";
+    } else {
+      return "evening";
+    }
+  }
+
+  console.log(isMorningOrAfternoon(new Date()));
+  console.log(dayjs().format("dddd"));
 
   return (
     <div>
@@ -101,13 +114,19 @@ export default function ModelForm({
                 id="filled-basic"
                 label="First Name"
                 variant="filled"
-                {...register("first_name")}
+                error={errors.first_name && true}
+                helperText={errors.first_name && "First name is required"}
+                {...register("first_name", {
+                  required: true,
+                })}
               />
               <TextField
                 id="filled-basic"
                 label="Surname"
                 variant="filled"
-                {...register("last_name")}
+                error={errors.last_name && true}
+                helperText={errors.last_name && "Surname is required"}
+                {...register("last_name", { required: true })}
               />
             </Box>
             <TextField
@@ -115,7 +134,9 @@ export default function ModelForm({
               id="filled-basic"
               label="Address"
               variant="filled"
-              {...register("address")}
+              error={errors.address && true}
+              helperText={errors.address && "Address is required"}
+              {...register("address", { required: true })}
             />
             <TextField
               sx={{ width: "100%", pb: 2 }}
@@ -133,7 +154,9 @@ export default function ModelForm({
                 id="filled-basic"
                 label="Contact Number"
                 variant="filled"
-                {...register("contact_no")}
+                error={errors.contact_no && true}
+                helperText={errors.contact_no && "Contact number is required"}
+                {...register("contact_no", { required: true })}
               />
 
               <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -160,7 +183,7 @@ export default function ModelForm({
                 onChange={(event: SelectChangeEvent) =>
                   setStatus(event.target.value as string)
                 }
-                register={register("material_status")}
+                register={register("material_status", { required: true })}
               />
 
               {/*    Department*/}
@@ -172,7 +195,9 @@ export default function ModelForm({
                 onChange={(event: SelectChangeEvent) =>
                   setDepartmentDropDown(event.target.value as string)
                 }
-                register={register("departmentId")}
+                register={register("departmentId", { required: true })}
+                name="departmentId"
+                errors={errors}
               />
             </Box>
             <BasicSelect
@@ -183,22 +208,19 @@ export default function ModelForm({
               onChange={(event: SelectChangeEvent) =>
                 setZoneDropDown(event.target.value as string)
               }
-              register={register("zoneId")}
+              register={register("zoneId", { required: true })}
+              name="zoneId"
+              errors={errors}
             />
 
-            <Button
-              className="w-full mt-4"
-              size="sm"
-              onClick={() => console.log("clicked")}
-              type="submit"
-            >
+            <Button className="w-full mt-4" size="sm" type="submit">
               Submit
             </Button>
 
             <Button
               className="w-full mt-4 bg-transparent text-slate-700 hover:bg-transparent"
               size="sm"
-              onClick={() => console.log("clicked")}
+              onClick={() => reset()}
             >
               clear
             </Button>

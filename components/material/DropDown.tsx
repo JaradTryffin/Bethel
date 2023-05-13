@@ -3,11 +3,13 @@ import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
+import Select from "@mui/material/Select";
 import { BasicSelectProps } from "@/types/member.type";
+import { useState } from "react";
 
 export default function BasicSelect(props: BasicSelectProps) {
-  const { label, options, value, onChange, width, register } = props;
+  const { label, options, value, onChange, width, register, errors, name } =
+    props;
 
   return (
     <Box sx={{ minWidth: 120 }}>
@@ -24,6 +26,7 @@ export default function BasicSelect(props: BasicSelectProps) {
           value={value.toString()}
           label={label}
           {...register}
+          error={errors && errors[`${name}`] && true}
           onChange={onChange}
         >
           {options.map((option) => (

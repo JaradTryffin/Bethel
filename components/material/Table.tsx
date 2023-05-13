@@ -10,6 +10,7 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/material";
 import { Member } from "@/types/member.type";
+import TemporaryDrawer from "@/components/material/Drawer";
 
 interface Column {
   id:
@@ -61,6 +62,7 @@ const columns: readonly Column[] = [
 export default function MaterialTable({ members }: { members: Member[] }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [state, setState] = React.useState(false);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -72,6 +74,19 @@ export default function MaterialTable({ members }: { members: Member[] }) {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
+
+  const toggleDrawer =
+    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+      if (
+        event.type === "keydown" &&
+        ((event as React.KeyboardEvent).key === "Tab" ||
+          (event as React.KeyboardEvent).key === "Shift")
+      ) {
+        return;
+      }
+
+      setState(open);
+    };
 
   return (
     <Box>
@@ -95,7 +110,13 @@ export default function MaterialTable({ members }: { members: Member[] }) {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((member) => {
                 return (
-                  <TableRow hover role="checkbox" tabIndex={-1} key={member.id}>
+                  <TableRow
+                    hover
+                    role="checkbox"
+                    tabIndex={-1}
+                    key={member.id}
+                    onClick={toggleDrawer(true)}
+                  >
                     {columns.map((column) => {
                       const value = member[column.id];
                       return (
@@ -119,6 +140,7 @@ export default function MaterialTable({ members }: { members: Member[] }) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+      <TemporaryDrawer drawer={{ state }} handleToggleDrawer={toggleDrawer} />
     </Box>
   );
 }

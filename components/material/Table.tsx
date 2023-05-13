@@ -11,6 +11,7 @@ import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/material";
 import { Member } from "@/types/member.type";
 import TemporaryDrawer from "@/components/material/Drawer";
+import axios from "axios";
 
 interface Column {
   id:
@@ -84,9 +85,17 @@ export default function MaterialTable({ members }: { members: Member[] }) {
       ) {
         return;
       }
-
       setState(open);
     };
+
+  const fetchMemberData = async (id: string) => {
+    try {
+      const response = await axios.get(`/api/member/${id}`, {});
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Box>
@@ -115,12 +124,16 @@ export default function MaterialTable({ members }: { members: Member[] }) {
                     role="checkbox"
                     tabIndex={-1}
                     key={member.id}
-                    onClick={toggleDrawer(true)}
+                    onClick={() => fetchMemberData(member.id)}
                   >
                     {columns.map((column) => {
                       const value = member[column.id];
                       return (
-                        <TableCell key={column.id} align={column.align}>
+                        <TableCell
+                          onClick={toggleDrawer(true)}
+                          key={column.id}
+                          align={column.align}
+                        >
                           {value}
                         </TableCell>
                       );

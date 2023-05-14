@@ -9,6 +9,8 @@ export const GET = async (req: NextApiRequest, { params }: any) => {
       select: {
         first_name: true,
         last_name: true,
+        address: true,
+        contact_no: true,
       },
     });
 

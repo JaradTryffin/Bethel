@@ -12,6 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import LabTabs from "@/components/material/Tabs";
+import { MemberData } from "@/types/member.type";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 
@@ -25,9 +26,11 @@ interface ToggleDrawerFunction {
 export default function TemporaryDrawer({
   drawer,
   handleToggleDrawer,
+  memberData,
 }: {
   drawer: Drawer;
   handleToggleDrawer: ToggleDrawerFunction;
+  memberData: MemberData | undefined;
 }) {
   const list = (anchor: Anchor) => (
     <Box
@@ -36,7 +39,7 @@ export default function TemporaryDrawer({
       // onClick={handleToggleDrawer(false)}
       onKeyDown={handleToggleDrawer(false)}
     >
-      <LabTabs />
+      <LabTabs memberData={memberData} />
     </Box>
   );
 

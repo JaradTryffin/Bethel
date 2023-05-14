@@ -5,8 +5,14 @@ import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
+import { MemberData } from "@/types/member.type";
+import Attendance from "@/components/Attendance";
 
-export default function LabTabs() {
+export default function LabTabs({
+  memberData,
+}: {
+  memberData: MemberData | undefined;
+}) {
   const [value, setValue] = React.useState("1");
 
   const handleChange = (event: React.SyntheticEvent, newValue: string) => {
@@ -23,7 +29,9 @@ export default function LabTabs() {
             <Tab label="History" value="3" />
           </TabList>
         </Box>
-        <TabPanel value="1">Attendance</TabPanel>
+        <TabPanel value="1">
+          <Attendance memberData={memberData} />
+        </TabPanel>
         <TabPanel value="2">Edit</TabPanel>
         <TabPanel value="3">History</TabPanel>
       </TabContext>

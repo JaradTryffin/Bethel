@@ -9,7 +9,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Box } from "@mui/material";
-import { Member } from "@/types/member.type";
+import { Member, MemberData } from "@/types/member.type";
 import TemporaryDrawer from "@/components/material/Drawer";
 import axios from "axios";
 
@@ -64,6 +64,7 @@ export default function MaterialTable({ members }: { members: Member[] }) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [state, setState] = React.useState(false);
+  const [memberData, setMemberData] = React.useState<MemberData>();
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -91,7 +92,7 @@ export default function MaterialTable({ members }: { members: Member[] }) {
   const fetchMemberData = async (id: string) => {
     try {
       const response = await axios.get(`/api/member/${id}`, {});
-      console.log(response);
+      setMemberData(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -153,7 +154,11 @@ export default function MaterialTable({ members }: { members: Member[] }) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <TemporaryDrawer drawer={{ state }} handleToggleDrawer={toggleDrawer} />
+      <TemporaryDrawer
+        drawer={{ state }}
+        handleToggleDrawer={toggleDrawer}
+        memberData={memberData}
+      />
     </Box>
   );
 }

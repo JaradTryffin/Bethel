@@ -38,3 +38,10 @@ export interface AddMember {
   departmentId: string;
   zoneId: string;
 }
+
+export interface MemberData {
+  first_name?: string;
+  last_name?: string;
+  address?: string;
+  contact_no: string;
+}

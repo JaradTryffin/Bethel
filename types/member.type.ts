@@ -45,3 +45,9 @@ export interface MemberData {
   address?: string;
   contact_no: string;
 }
+
+export interface AddAttendance {
+  memberId: string;
+  name: string;
+  status: boolean;
+}

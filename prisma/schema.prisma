@@ -38,7 +38,8 @@ model Attendance {
   id       String   @id @unique @default(uuid())
   member   Member   @relation(fields: [memberId], references: [id])
   memberId String
-  date     DateTime
+  name     String
+  date     DateTime @default(now())
   status   Boolean
 }
 
